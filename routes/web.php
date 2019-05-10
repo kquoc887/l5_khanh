@@ -15,5 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('signUp', function() {
+    return view('signup');
+});
+
 Route::resource('projects', 'ProjectsController');
 Route::resource('projects.tasks', 'TasksController');
+Route::resource('users', 'UsersController');

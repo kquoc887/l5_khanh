@@ -28,11 +28,15 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
         Route::model('project', 'Project');
         Route::model('task', 'Task');
+        Route::model('user', 'User');
         Route::bind('project', function($value){
             return \App\Project::where('slug', $value)->first();
         });
         Route::bind('task', function($value){
             return \App\Task::where('slug', $value)->first();
+        });
+        Route::bind('user', function($value){
+            return \App\User::where('id', $value)->first();
         });
     }
 

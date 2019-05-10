@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Project;
+use Validator;
 
 class ProjectsController extends Controller
 {
@@ -42,10 +43,14 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData  = $request->validate($this->rules);
+        $validator = Validator::make($request->all(), $this->rules);
+
+        if ($validator->fails()) {
+            return redirect()->route('projects.create')->withErrors($validator)->withInput($request->all());
+        }
         $input = $request->all();
         Project::create($input);
-        return redirect()->route('projects.index')->with('mesage', 'Project created');
+        return redirect()->route('projects.index')->with('message', 'Project created');
     }
 
     /**

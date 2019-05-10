@@ -5,6 +5,6 @@
     @include('projects.partials.form')
     @csrf
     @method('PATCH')
-    <button type="submit" class="btn btn-primary">Edit Project</button>
+    <button type="submit" class="btn btn-primary btn-flat">Edit Project</button>
 </form>
 @endsection

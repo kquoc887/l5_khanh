@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\Task;
+use Validator;
 
 class TasksController extends Controller
 {
     protected $rules = [
         'name' => 'required|min:3',
-        'slug' => 'required',
         'description' => 'required',
     ];
-    /**
+
+    
+    /** 
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -41,15 +43,26 @@ class TasksController extends Controller
      */
     public function store(Request $request, Project $project)
     {
-        $validatedData  = $request->validate($this->rules);
-        $input = array_except($request->all(), ['_method', 'completed']);
+        $input = array_except($request->all(), ['_method', 'completed', '_token']);
         
+        if ($request->slug == '') {
+            $input['slug'] = changSlug($request->name);
+        }
+
         if ($request->completed == '') {
             $input['completed'] = 0;
         } else {
             $input['completed'] = 1;
         }
+        
+      
+        $validator = Validator::make($request->all(), $this->rules);
 
+        if ($validator->fails()) {
+            return redirect()->route('projects.tasks.create', $project->slug)->withErrors($validator)->withInput($request->all());
+        }
+        // $validator = Validator::make($request->all(), $this->rules);
+        
         $input['project_id'] = $project->id;
         Task::create($input);
         return redirect()->route('projects.show', $project->slug)->with('message', 'Task Create');
@@ -96,7 +109,7 @@ class TasksController extends Controller
         }
 
         $task->update($input);
-        return redirect()->route('projects.show',$project->slug)->with('mesage', 'Task eEited');
+        return redirect()->route('projects.show',$project->slug)->with('message', 'Task eEited');
         
     }
 

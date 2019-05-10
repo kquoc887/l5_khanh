@@ -15,17 +15,19 @@
                     <?php $count++; ?>
                     <td>
                         <form action="{{route('projects.destroy', $project->slug)}}" method="POST">
-                            <a href="{{route('projects.edit', $project->slug)}}" class="btn btn-primary">Edit</a>
+                          <div class="btn-group">
+                            <a href="{{route('projects.edit', $project->slug)}}" class="btn btn-primary btn-flat">Edit</a>
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-flat">Delete</button>
+                          </div>
                         </form>
                     </td>
                 </tr>
             @endforeach
         </table>
         <div class="float-right">
-            <a href="{{route('projects.create')}}" class="btn btn-warning">Create Project</a>
+            <a href="{{route('projects.create')}}" class="btn btn-warning btn-flat">Create Project</a>
         </div>
     </div>
 @endsection
